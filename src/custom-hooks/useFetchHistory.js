@@ -46,7 +46,7 @@ const useFetchHistory = () => {
             points: item.points_gained,
             formattedDate,
             formattedTime,
-            action: isPointsGained ? "gained" : "minus",
+            action: isPointsGained ? "accumulated" : "deducted",
           };
         });
 
