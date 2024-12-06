@@ -105,9 +105,13 @@ export function CrudForm() {
   };
 
   const handleTeamSubmit = () => {
+    // Validate `players` array by removing any trailing empty strings before submission
+    const filteredPlayers = teamPlayers.filter(
+      (player) => player.trim() !== ""
+    );
     const validation = teamSchema.safeParse({
       ...teamData,
-      players: teamPlayers,
+      players: filteredPlayers,
     });
 
     if (!validation.success) {
@@ -122,7 +126,7 @@ export function CrudForm() {
     }
 
     // Proceed with submission if validation passes
-    useCreateTeam(teamData, teamPlayers);
+    useCreateTeam(teamData, filteredPlayers);
     resetFields();
     setIsDialogOpen(false);
   };
@@ -284,13 +288,14 @@ export function CrudForm() {
                   </Button>
                 </div>
               ))}
+              {errors.players && (
+                <p className="text-red-500 text-sm">{errors.players}</p>
+              )}
               <Button type="button" onClick={addPlayerField}>
                 Add Player
               </Button>
             </div>
-            {errors.players && (
-              <p className="text-red-500 text-sm">{errors.players}</p>
-            )}
+
             <Button onClick={handleTeamSubmit}>Register Team</Button>
           </TabsContent>
         </Tabs>
