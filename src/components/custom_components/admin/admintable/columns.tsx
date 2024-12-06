@@ -17,13 +17,25 @@ export const columns = [
     cell: ({ row }) => <TableCell>{row.original.id}</TableCell>,
   },
   {
-    accessorKey: "full_name",
+    accessorKey: "full_name team_name",
     header: () => (
       <p className="flex items-center gap-1 cursor-pointer hover:text-red-500">
-        Full Name
+        Full Name/Team Name
       </p>
     ),
-    cell: ({ row }) => <TableCell>{row.original.full_name}</TableCell>,
+    cell: ({ row }) => {
+      const { full_name, team_name } = row.original;
+
+      if (!full_name && !team_name) {
+        return <TableCell>-</TableCell>;
+      }
+
+      return (
+        <TableCell>
+          {[full_name, team_name].filter(Boolean).join(" || ")}
+        </TableCell>
+      );
+    },
   },
   {
     accessorKey: "section_team",
