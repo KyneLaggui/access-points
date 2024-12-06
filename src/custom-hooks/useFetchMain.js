@@ -9,19 +9,52 @@ const useFetchMain = () => {
       const { data, error } = await supabase.from("main").select("*");
 
       if (data) {
-        const allMainData = data.map((main) => {
-          return {
-            ...main,
-          };
-        });
-
-        setMainData(allMainData);
+        setMainData(data);
       } else {
-        console.log(error);
+        console.error(error);
       }
     };
 
+    // Fetch initial data
     fetchMainData();
+
+    // Subscribe to real-time updates
+    const subscription = supabase
+      .channel("realtime:main") // Create a unique channel for this table
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "main" },
+        (payload) => {
+          console.log("Realtime event:", payload);
+
+          // Handle different event types
+          switch (payload.eventType) {
+            case "INSERT":
+              setMainData((prev) => [...prev, payload.new]); // Add new row
+              break;
+            case "UPDATE":
+              setMainData((prev) =>
+                prev.map((item) =>
+                  item.id === payload.new.id ? payload.new : item
+                )
+              ); // Update existing row
+              break;
+            case "DELETE":
+              setMainData((prev) =>
+                prev.filter((item) => item.id !== payload.old.id)
+              ); // Remove deleted row
+              break;
+            default:
+              break;
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return { mainData };
