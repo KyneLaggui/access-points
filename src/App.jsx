@@ -6,6 +6,7 @@ import useFetchMain from "./custom-hooks/useFetchMain";
 import useFetchTeamPlayers from "./custom-hooks/useFetchTeamPlayers";
 import { PointsManager } from "./components/custom_components/PointsManager";
 import { HistoryList } from "./components/custom_components/HistoryList";
+import AdminTable from "./components/custom_components/admin/admintable/AdminTable";
 PointsManager;
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <TeamCrudForm />
       <PointsManager />
       <HistoryList />
+      <AdminTable />
       {allData.length > 0 &&
         allData.map((data) => (
           <div key={data.id}>
