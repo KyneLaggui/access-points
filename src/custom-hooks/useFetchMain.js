@@ -15,7 +15,6 @@ const useFetchMain = () => {
       }
     };
 
-    // Fetch initial data
     fetchMainData();
 
     // Subscribe to real-time updates
@@ -25,24 +24,34 @@ const useFetchMain = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "main" },
         (payload) => {
-          console.log("Realtime event:", payload);
+          console.log("Realtime event:", payload); // Log payload for debugging
 
           // Handle different event types
           switch (payload.eventType) {
             case "INSERT":
-              setMainData((prev) => [...prev, payload.new]); // Add new row
+              fetchMainData();
+              // setMainData((prev) => {
+              //   console.log("Insert Payload:", payload.new);
+              //   return [...prev, payload.new];
+              // });
               break;
             case "UPDATE":
-              setMainData((prev) =>
-                prev.map((item) =>
-                  item.id === payload.new.id ? payload.new : item
-                )
-              ); // Update existing row
+              fetchMainData();
+              // setMainData((prev) => {
+              //   console.log("Update Payload:", payload.new);
+              //   return prev.map((item) =>
+              //     item.id === payload.new.id
+              //       ? { ...item, ...payload.new }
+              //       : item
+              //   );
+              // });
               break;
             case "DELETE":
-              setMainData((prev) =>
-                prev.filter((item) => item.id !== payload.old.id)
-              ); // Remove deleted row
+              fetchMainData();
+              // setMainData((prev) => {
+              //   console.log("Delete Payload:", payload.old);
+              //   return prev.filter((item) => item.id !== payload.old.id); /
+              // });
               break;
             default:
               break;
@@ -57,7 +66,7 @@ const useFetchMain = () => {
     };
   }, []);
 
-  return { mainData };
+  return mainData; // Directly return mainData to use in your component
 };
 
 export default useFetchMain;

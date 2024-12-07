@@ -11,43 +11,45 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getSortedRowModel, // sorting
-  getPaginationRowModel, // pagination
-  getFilteredRowModel, // filtering
-  getFacetedRowModel, // faceted filtering
-  getFacetedUniqueValues, // faceted filtering
+  getSortedRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
 } from "@tanstack/react-table";
 import { useState, useEffect } from "react";
 import DataTableToolbar from "./data-table-toolbar";
 import useFetchMain from "../../../../custom-hooks/useFetchMain";
 
 function DataTable({ columns }) {
-  const [sorting, setSorting] = useState([]); // sorting
-  const [columnFilters, setColumnFilters] = useState([]); // filtering
-  const playerInformation = useFetchMain();
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const mainData = useFetchMain();
 
   const table = useReactTable({
-    data: playerInformation.mainData,
+    data: mainData,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(), // pagination
-    onSortingChange: setSorting, // sorting
-    getSortedRowModel: getSortedRowModel(), // sorting
-    onColumnFiltersChange: setColumnFilters, // filtering
-    getFilteredRowModel: getFilteredRowModel(), // filtering
-    getFacetedRowModel: getFacetedRowModel(), // faceted filtering
-    getFacetedUniqueValues: getFacetedUniqueValues(), // faceted filtering
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
-      sorting, // sorting
-      columnFilters, // filtering
+      sorting,
+      columnFilters,
     },
   });
 
   return (
     <div className="flex flex-col gap-4">
-      <DataTableToolbar table={table} allData={playerInformation} />
+      <DataTableToolbar table={table} allData={mainData} />
       <div className="rounded-md border">
-        <Table>
+        <Table key={mainData.length}>
+          {" "}
+          {/* Force table to re-render */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -82,14 +84,9 @@ function DataTable({ columns }) {
                 </TableRow>
               ))
             ) : (
-              <TableRow className="">
+              <TableRow>
                 <TableCell colSpan={columns.length}>
                   <div className="flex flex-col items-start sm:items-center">
-                    {/* <img
-                      src={NoProduct}
-                      alt="No product picture"
-                      className="max-w-[300px]"
-                    /> */}
                     <p className="text-center">No users found</p>
                   </div>
                 </TableCell>
