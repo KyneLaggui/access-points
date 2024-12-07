@@ -14,6 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { supabase } from "@/supabase/config";
 import { useNavigate } from "react-router";
+import { Lock } from "lucide-react";
 
 const LoginForm = () => {
   const [isOpen, setIsOpen] = useState();
@@ -45,7 +46,9 @@ const LoginForm = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
+        <Button className="px-3 py-1">
+          <Lock />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

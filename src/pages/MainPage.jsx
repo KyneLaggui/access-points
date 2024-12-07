@@ -7,9 +7,9 @@ import Teams from "@/pages/Teams";
 
 const MainPage = () => {
   return (
-    <div className="bg-[#222222] flex flex-col justify-center items-center gap-6">
+    <div className="bg-[#222222] flex flex-col justify-center items-center gap-4 py-7">
       <img src={MainLogo} alt="Cpe Fair Logo" className="max-w-[200px]" />
-      <div className="w-full max-w-[1200px] ">
+      <div className="w-full max-w-[1200px] flex flex-col gap-5">
         <div className="text-white flex flex-col text-center">
           <h1 className="font-formula1Bold text-5xl">THE CPE GRAND PRIX</h1>
           <p className="font-formula1">MINI GAMES LEADERBOADS</p>
