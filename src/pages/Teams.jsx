@@ -4,13 +4,13 @@ import useFetchMain from "../custom-hooks/useFetchMain";
 const Teams = () => {
   // List of teams with the correct background colors for display
   const teams = [
-    { name: "Ferrari", value: "ferrari", color: "bg-red-500" },
-    { name: "Aston Martin", value: "aston_martin", color: "bg-green-500" },
-    { name: "Redbull", value: "redbull", color: "bg-blue-500" },
-    { name: "Alpine", value: "alpine", color: "bg-blue-700" },
-    { name: "Haas", value: "haas", color: "bg-gray-500" },
-    { name: "Mercedes", value: "mercedes", color: "bg-gray-900" },
-    { name: "McLaren", value: "mclaren", color: "bg-orange-500" },
+    { name: "Ferrari", value: "ferrari", color: "bg-[#ff7900]" },
+    { name: "Aston Martin", value: "aston_martin", color: "bg-[#006833]" },
+    { name: "Redbull", value: "redbull", color: "bg-[#e11b4c]" },
+    { name: "Alpine", value: "alpine", color: "bg-[#006fb9]" },
+    { name: "Haas", value: "haas", color: "bg-[#ffffff]" },
+    { name: "Mercedes", value: "mercedes", color: "bg-[#3b3b3b]" },
+    { name: "McLaren", value: "mclaren", color: "bg-[#ffbc1d]" },
   ];
 
   const { mainData } = useFetchMain(); // Fetch data using custom hook
@@ -81,26 +81,35 @@ const Teams = () => {
       }
     });
 
+    // Sort the teams by points in descending order to determine ranking
+    initialTeamPoints.sort((a, b) => b.points - a.points);
+
     setTeamPoints(initialTeamPoints); // Set the calculated team points
     setHighestContributors(initialTeamPoints); // Set the highest contributor data
   }, [mainData, selectedGame]);
 
   return (
     <div className="p-4">
-      {/* Game Selection Buttons */}
-      <div className="flex space-x-4 mb-4">
+      <div className="flex justify-between mb-4 overflow-x-scroll sm:overflow-x-hidden">
         {games.map((game) => (
           <button
             key={game}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className={`px-4 py-2 text-white relative group text-nowrap  ${
+              selectedGame === game ? "text-yellow-400 " : ""
+            }`}
             onClick={() => setSelectedGame(game)}
           >
-            {gameNames[game]} {/* Display the user-friendly name */}
+            {gameNames[game]}
+            <span
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${
+                selectedGame === game ? "scale-x-100" : ""
+              }`}
+            />
           </button>
         ))}
       </div>
 
-      {/* Display all teams' points and highest contributors */}
+      {/* Display all teams' points and highest contributors with ranking */}
       <div className="grid gap-4">
         {teamPoints.map((team, index) => (
           <div
@@ -108,12 +117,23 @@ const Teams = () => {
             className={`p-4 text-white font-bold rounded-md ${team.color}`}
           >
             <div className="flex justify-between items-center">
-              <span>{team.name}</span>
-              <span>{team.points} Points</span>
+              <h1
+                className={`font-formula1Bold uppercase text-3xl ${
+                  team.name === "Haas" ? "text-black" : "text-white"
+                }`}
+              >
+                {index + 1}. {team.name}
+              </h1>
+              <span className="font-formula1Bold text-3xl">{team.points}</span>
             </div>
             <div className="mt-2">
-              <span>Highest Contributor: {team.highestContributor.name}</span>
-              <span> - {team.highestContributor.points} Points</span>
+              <span
+                className={` ${
+                  team.name === "Haas" ? "text-black" : "text-white"
+                }`}
+              >
+                Highest Contributor: {team.highestContributor.name}
+              </span>
             </div>
           </div>
         ))}
