@@ -18,26 +18,42 @@ export const columns = [
     cell: ({ row }) => <TableCell>{row.original.id}</TableCell>,
   },
   {
-    accessorKey: "full_name team_name",
+    // You can use a single accessor here for the display, but not combine the keys
+    accessorKey: "full_name", // Keep a single accessor key for table functionality
     header: () => (
       <p className="flex items-center gap-1 cursor-pointer hover:text-red-500">
         Full Name/Team Name
       </p>
     ),
     cell: ({ row }) => {
-      const { full_name, team_name } = row.original;
+      const { full_name, team_name } = row.original; // Access full_name and team_name separately
 
+      // If neither full_name nor team_name is available, return "-"
       if (!full_name && !team_name) {
         return <TableCell>-</TableCell>;
       }
 
+      // Combine full_name and team_name for display
       return (
         <TableCell>
           {[full_name, team_name].filter(Boolean).join(" || ")}
         </TableCell>
       );
     },
+    filterFn: (row, columnId, filterValue) => {
+      const { full_name, team_name } = row.original; // Access full_name and team_name separately
+
+      // Combine full_name and team_name for filtering
+      const combinedValue = `${full_name} ${team_name}`.toLowerCase();
+
+      // Normalize the filter value (trim spaces and make lowercase)
+      const normalizedFilterValue = filterValue.trim().toLowerCase();
+
+      // Check if the combined value includes the filter value
+      return combinedValue.includes(normalizedFilterValue);
+    },
   },
+
   {
     accessorKey: "section_team",
     header: () => (
