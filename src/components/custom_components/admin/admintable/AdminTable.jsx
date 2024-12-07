@@ -1,25 +1,31 @@
 import { useEffect } from "react";
 import { columns } from "./columns";
 import DataTable from "./data-table";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
+import { supabase } from "@/supabase/config";
 
 export default function AdminTable() {
-  // const dispatch = useDispatch();
-  // const { orders: fetchedOrders } = fetchAllOrders(); // Fetch products from Supabase
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (fetchedProducts) {
-  //     const allOrders = fetchedOrders.map((product) => ({
-  //       id: product.id,
-  //       name: product.name,
-  //       description: product.description,
-  //       sellMethod: product.sell_method,
-  //       attributes: product.attributes,
-  //       price: product.price,
-  //     }));
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      navigate("/"); // Redirect to login after logout
+    } else {
+      console.error("Logout failed:", error.message);
+    }
+  };
 
-  //   }
-
-  // }, [fetchedOrders, dispatch]);
-
-  return <DataTable columns={columns} />; // Pass Redux products to DataTable
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold">Admin Dashboard</h1>
+        <Button variant="outline" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
+      <DataTable columns={columns} />
+    </div>
+  );
 }
