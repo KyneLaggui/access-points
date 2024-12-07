@@ -4,6 +4,11 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        formula1: ["Formula1-Regular", "sans-serif"],
+        formula1Bold: ["Formula1-Bold", "sans-serif"],
+        formula1Wide: ["Formula1-Wide", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
