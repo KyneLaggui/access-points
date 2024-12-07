@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import useCreateMain from "@/custom-hooks/useCreateMain";
 import useCreateTeam from "@/custom-hooks/useCreateTeam";
+import { Trash2 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const EditFormDialog = ({
   isOpen,
@@ -103,20 +105,29 @@ export const EditFormDialog = ({
                 onChange={(e) => setEditedTeamName(e.target.value)}
               />
               <Label htmlFor="team_players">Players</Label>
-              {localTeamPlayers.map((player, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <Input
-                    value={player}
-                    onChange={(e) => handlePlayerChange(index, e.target.value)}
-                  />
-                  <Button
-                    variant="destructive"
-                    onClick={() => removePlayer(index)}
-                  >
-                    Remove
-                  </Button>
+              <ScrollArea>
+                <div className="max-h-[120px] flex flex-col gap-4">
+                  {localTeamPlayers.map((player, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center gap-2"
+                    >
+                      <Input
+                        value={player}
+                        onChange={(e) =>
+                          handlePlayerChange(index, e.target.value)
+                        }
+                      />
+                      <Button
+                        variant="destructive"
+                        onClick={() => removePlayer(index)}
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </ScrollArea>
               <Button type="button" onClick={addPlayer}>
                 Add Player
               </Button>

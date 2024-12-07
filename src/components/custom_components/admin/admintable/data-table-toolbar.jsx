@@ -1,11 +1,16 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
+  Blocks,
+  Car,
   CircleAlert,
   CircleCheckBig,
+  CupSoda,
   HandHelping,
   Lightbulb,
+  LoaderCircle,
   ScanEye,
+  Shirt,
   TriangleAlert,
   VenetianMask,
   X,
@@ -19,37 +24,37 @@ function DataTableToolbar({ table, allData }) {
     {
       value: "ferrari",
       label: "Ferrari",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "aston_martin",
       label: "Aston Martin",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "redbull",
       label: "Red Bull",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "alpine",
       label: "Alpine",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "haas",
       label: "Haas",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "mercedes",
       label: "Mercedes",
-      icon: TriangleAlert,
+      icon: Car,
     },
     {
       value: "mclaren",
       label: "McLaren",
-      icon: TriangleAlert,
+      icon: Car,
     },
   ];
 
@@ -57,22 +62,22 @@ function DataTableToolbar({ table, allData }) {
     {
       value: "dress_to_impress",
       label: "Dress to Impress",
-      icon: VenetianMask,
+      icon: Shirt,
     },
     {
       value: "block_blast",
       label: "Block Blast",
-      icon: VenetianMask,
+      icon: Blocks,
     },
     {
       value: "chinese_garter",
       label: "Chinese Garter",
-      icon: VenetianMask,
+      icon: LoaderCircle,
     },
     {
       value: "flip_cup",
       label: "Flip Cup",
-      icon: VenetianMask,
+      icon: CupSoda,
     },
   ];
 
@@ -85,7 +90,7 @@ function DataTableToolbar({ table, allData }) {
           onChange={(event) =>
             table.getColumn("full_name")?.setFilterValue(event.target.value)
           }
-          className="min-w-[200px]"
+          className="w-full sm:max-w-[200px] h-11"
         />
 
         <DataTableFacetedFilter

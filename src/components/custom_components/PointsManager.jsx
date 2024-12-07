@@ -56,13 +56,19 @@ export function PointsManager({ isOpen, setIsOpen, player }) {
           {player && (
             <>
               <p>
-                Current Points for {player.team_name || player.full_name}:{" "}
-                {player.points}
+                Current Points for{" "}
+                <span className="text-yellow-500">
+                  {player.team_name || player.full_name}
+                </span>
+                : {player.points}
               </p>
 
               {/* Points Input */}
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="points_input" className="text-right">
+              <div className="flex items-center gap-2">
+                <Label
+                  htmlFor="points_input"
+                  className="text-right text-nowrap"
+                >
                   Enter New Points
                 </Label>
                 <Input

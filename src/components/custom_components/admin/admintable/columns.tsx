@@ -97,9 +97,17 @@ export const columns = [
   },
   {
     accessorKey: "points",
-    header: () => (
-      <p className="flex items-center gap-1 cursor-pointer hover:text-red-500">
+    header: ({ column }) => (
+      <p
+        className="flex items-center gap-1 cursor-pointer hover:text-red-500"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
         Points
+        {column.getIsSorted() === "asc" ? (
+          <ArrowUp className="h-3 w-3" />
+        ) : (
+          <ArrowDown className="h-3 w-3" />
+        )}
       </p>
     ),
     cell: ({ row }) => <TableCell>{row.original.points}</TableCell>,
@@ -163,6 +171,12 @@ export const columns = [
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
+                onClick={() => handleOpenDialog(player)}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
                 onClick={() => setIsDialogOpen(true)}
               >
                 Manage Points
@@ -172,12 +186,6 @@ export const columns = [
                 onClick={() => setIsAlertOpen(true)} // Open the alert dialog for confirmation
               >
                 Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => handleOpenDialog(player)}
-              >
-                Edit
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

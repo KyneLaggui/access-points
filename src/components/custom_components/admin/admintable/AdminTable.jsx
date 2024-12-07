@@ -11,7 +11,7 @@ export default function AdminTable() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      navigate("/"); // Redirect to login after logout
+      navigate("/");
     } else {
       console.error("Logout failed:", error.message);
     }
@@ -20,8 +20,8 @@ export default function AdminTable() {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
-        <Button variant="outline" onClick={handleLogout}>
+        <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+        <Button variant="destructive" onClick={handleLogout}>
           Logout
         </Button>
       </div>

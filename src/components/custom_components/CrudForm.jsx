@@ -21,6 +21,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import useCreateMain from "../../custom-hooks/useCreateMain";
 import useCreateTeam from "../../custom-hooks/useCreateTeam";
+import { Plus, Trash2 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const playerSchema = z.object({
   full_name: z.string().min(1, "Full Name is required"),
@@ -142,7 +144,9 @@ export function CrudForm() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Register</Button>
+        <Button variant="outline" className="h-11">
+          Register <Plus />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="sr-only">
@@ -160,7 +164,7 @@ export function CrudForm() {
 
           {/* Player Tab */}
           <TabsContent value="player">
-            <div className="grid gap-4">
+            <div className="flex flex-col gap-4 my-4">
               <Label htmlFor="full_name">Full Name</Label>
               <Input
                 id="full_name"
@@ -221,12 +225,14 @@ export function CrudForm() {
               )}
               {/* Section Team Select */}
             </div>
-            <Button onClick={handlePlayerSubmit}>Save changes</Button>
+            <div className="flex justify-end">
+              <Button onClick={handleTeamSubmit}>Register Team</Button>
+            </div>
           </TabsContent>
 
           {/* Team Tab */}
           <TabsContent value="team">
-            <div className="grid gap-4">
+            <div className="flex flex-col gap-4 my-4">
               {/* Team Name */}
               <Label htmlFor="team_name">Team Name</Label>
               <Input
@@ -282,27 +288,30 @@ export function CrudForm() {
 
               {/* Players */}
               <Label>Players</Label>
-              {teamPlayers.map((player, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-4 items-center gap-4"
-                >
-                  <Input
-                    id={`player_${index}`}
-                    placeholder={`Player ${index + 1}`}
-                    value={player}
-                    onChange={(e) => handlePlayerChange(index, e.target.value)}
-                  />
-                  <Button
-                    variant="destructive"
-                    type="button"
-                    onClick={() => removePlayerField(index)}
-                    disabled={teamPlayers.length <= 2}
-                  >
-                    Remove
-                  </Button>
+              <ScrollArea>
+                <div className="flex flex-col gap-4 max-h-[100px]">
+                  {teamPlayers.map((player, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <Input
+                        id={`player_${index}`}
+                        placeholder={`Player ${index + 1}`}
+                        value={player}
+                        onChange={(e) =>
+                          handlePlayerChange(index, e.target.value)
+                        }
+                      />
+                      <Button
+                        variant="destructive"
+                        type="button"
+                        onClick={() => removePlayerField(index)}
+                        disabled={teamPlayers.length <= 2}
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </ScrollArea>
               {errors.players && (
                 <p className="text-red-500 text-sm">{errors.players}</p>
               )}
@@ -311,7 +320,9 @@ export function CrudForm() {
               </Button>
             </div>
 
-            <Button onClick={handleTeamSubmit}>Register Team</Button>
+            <div className="flex justify-end">
+              <Button onClick={handleTeamSubmit}>Register Team</Button>
+            </div>
           </TabsContent>
         </Tabs>
       </DialogContent>
