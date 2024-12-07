@@ -131,13 +131,11 @@ export function CrudForm() {
     }
 
     try {
-      // Call your custom hook here and wait for it to finish
       await useCreateTeam(teamData, filteredPlayers);
       resetFields();
       setIsDialogOpen(false);
     } catch (error) {
       console.error("Error submitting team:", error);
-      // Optionally handle error state here
     }
   };
 
