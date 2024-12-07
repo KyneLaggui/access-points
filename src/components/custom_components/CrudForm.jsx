@@ -90,7 +90,6 @@ export function CrudForm() {
     const validation = playerSchema.safeParse(formState);
 
     if (!validation.success) {
-      // Extract errors into a dictionary for easy display
       const newErrors = validation.error.format();
       setErrors({
         full_name: newErrors.full_name?._errors?.[0],
@@ -100,14 +99,18 @@ export function CrudForm() {
       return;
     }
 
-    // Proceed with submission if validation passes
-    useCreateMain(formState);
-    resetFields();
-    setIsDialogOpen(false);
+    try {
+      // Call your custom hook here and wait for it to finish
+      await useCreateMain(formState);
+      resetFields();
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error submitting player:", error);
+      // Optionally handle error state here
+    }
   };
 
-  const handleTeamSubmit = () => {
-    // Validate `players` array by removing any trailing empty strings before submission
+  const handleTeamSubmit = async () => {
     const filteredPlayers = teamPlayers.filter(
       (player) => player.trim() !== ""
     );
@@ -127,10 +130,15 @@ export function CrudForm() {
       return;
     }
 
-    // Proceed with submission if validation passes
-    useCreateTeam(teamData, filteredPlayers);
-    resetFields();
-    setIsDialogOpen(false);
+    try {
+      // Call your custom hook here and wait for it to finish
+      await useCreateTeam(teamData, filteredPlayers);
+      resetFields();
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error submitting team:", error);
+      // Optionally handle error state here
+    }
   };
 
   return (

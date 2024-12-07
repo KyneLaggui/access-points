@@ -9,12 +9,13 @@ const useFetchMain = () => {
       const { data, error } = await supabase.from("main").select("*");
 
       if (data) {
-        setMainData(data);
+        setMainData(data); // Only set data once
       } else {
         console.error(error);
       }
     };
 
+    // Fetch initial data
     fetchMainData();
 
     // Subscribe to real-time updates
@@ -24,34 +25,24 @@ const useFetchMain = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "main" },
         (payload) => {
-          console.log("Realtime event:", payload); // Log payload for debugging
+          console.log("Realtime event:", payload);
 
           // Handle different event types
           switch (payload.eventType) {
             case "INSERT":
-              fetchMainData();
-              // setMainData((prev) => {
-              //   console.log("Insert Payload:", payload.new);
-              //   return [...prev, payload.new];
-              // });
+              setMainData((prev) => [...prev, payload.new]); // Add new row
               break;
             case "UPDATE":
-              fetchMainData();
-              // setMainData((prev) => {
-              //   console.log("Update Payload:", payload.new);
-              //   return prev.map((item) =>
-              //     item.id === payload.new.id
-              //       ? { ...item, ...payload.new }
-              //       : item
-              //   );
-              // });
+              setMainData((prev) =>
+                prev.map((item) =>
+                  item.id === payload.new.id ? payload.new : item
+                )
+              ); // Update existing row
               break;
             case "DELETE":
-              fetchMainData();
-              // setMainData((prev) => {
-              //   console.log("Delete Payload:", payload.old);
-              //   return prev.filter((item) => item.id !== payload.old.id); /
-              // });
+              setMainData((prev) =>
+                prev.filter((item) => item.id !== payload.old.id)
+              ); // Remove deleted row
               break;
             default:
               break;
@@ -66,7 +57,7 @@ const useFetchMain = () => {
     };
   }, []);
 
-  return mainData; // Directly return mainData to use in your component
+  return { mainData };
 };
 
 export default useFetchMain;
