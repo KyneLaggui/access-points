@@ -1,37 +1,31 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import "./App.css";
-import { CrudForm } from "./components/custom_components/CrudForm";
-import useFetchMain from "./custom-hooks/useFetchMain";
-import useFetchTeamPlayers from "./custom-hooks/useFetchTeamPlayers";
-import { PointsManager } from "./components/custom_components/PointsManager";
-import { HistoryList } from "./components/custom_components/HistoryList";
+import { supabase } from "./supabase/config";
+import LoginForm from "./components/custom_components/admin/LoginForm";
 import AdminTable from "./components/custom_components/admin/admintable/AdminTable";
+import ProtectedRoute from "@/components/custom_components/ProtectedRoute";
 
 function App() {
-  const [teamPlayers, setTeamPlayers] = useState([]);
-  const { playersData } = useFetchTeamPlayers();
-
-  useEffect(() => {
-    if (playersData) {
-      setTeamPlayers(playersData);
-    }
-  }, [playersData]);
-
   return (
-    <div>
-      {/* <CrudForm /> */}
-      {/* <PointsManager /> */}
-      {/* <HistoryList /> */}
-      <AdminTable />
+    <Router>
+      <Routes>
+        {/* Login Route */}
+        <Route path="/login" element={<LoginForm />} />
 
-      {teamPlayers.length > 0 &&
-        teamPlayers.map((player, index) => (
-          <div key={index}>
-            <p className="text-blue">Team Name: {player.team_name}</p>
-            <p className="text-blue">Player Name: {player.player_name}</p>
-          </div>
-        ))}
-    </div>
+        {/* Protected Admin Route */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminTable />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirect to login by default */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 

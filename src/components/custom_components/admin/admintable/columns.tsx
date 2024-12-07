@@ -150,9 +150,6 @@ export const columns = [
           console.error("Error deleting player:", error.message); // Handle error
           return;
         }
-
-        console.log("Player deleted successfully:", data); // Log the result
-        // Optionally, refresh your list or update state here
       };
 
       return (
