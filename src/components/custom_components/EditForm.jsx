@@ -55,18 +55,18 @@ export const EditFormDialog = ({
         section_team: editedSectionTeam,
         game: editedGame,
       };
-      await createTeam(teamData, localTeamPlayers); // Save team data
+      await createTeam(teamData, localTeamPlayers);
     } else {
-      const playerData = {
+      const newPlayerData = {
         id: playerData.id,
         full_name: editedName,
         section_team: editedSectionTeam,
         game: editedGame,
       };
-      await createMain(playerData); // Save player data
+      await createMain(newPlayerData);
     }
 
-    setIsOpen(false); // Close dialog after saving
+    setIsOpen(false);
   };
 
   const handlePlayerChange = (index, value) => {
