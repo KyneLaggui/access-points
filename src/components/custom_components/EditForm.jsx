@@ -157,14 +157,20 @@ export const EditFormDialog = ({
               <SelectValue placeholder="Select Game" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="flip_cup">Flip Cup</SelectItem>
               <SelectItem value="chinese_garter">Chinese Garter</SelectItem>
-              {isTeam ? null : (
+
+              {!isTeam && (
                 <>
                   <SelectItem value="dress_to_impress">
                     Dress to Impress
                   </SelectItem>
                   <SelectItem value="block_blast">Block Blast</SelectItem>
+                </>
+              )}
+
+              {isTeam && (
+                <>
+                  <SelectItem value="flip_cup">Flip Cup</SelectItem>
                 </>
               )}
             </SelectContent>
