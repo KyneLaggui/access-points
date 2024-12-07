@@ -25,6 +25,7 @@ const useFetchMain = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "main" },
         (payload) => {
+          console.log("Realtime event on", payload);
           // Handle different event types
           switch (payload.eventType) {
             case "INSERT":

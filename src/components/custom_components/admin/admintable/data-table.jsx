@@ -25,6 +25,7 @@ function DataTable({ columns }) {
   const [sorting, setSorting] = useState([]); // sorting
   const [columnFilters, setColumnFilters] = useState([]); // filtering
   const { mainData } = useFetchMain();
+  console.log(mainData);
 
   const table = useReactTable({
     data: mainData,

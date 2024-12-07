@@ -19,9 +19,9 @@ function App() {
 
   return (
     <div>
-      <CrudForm />
-      <PointsManager />
-      <HistoryList />
+      {/* <CrudForm /> */}
+      {/* <PointsManager /> */}
+      {/* <HistoryList /> */}
       <AdminTable />
 
       {teamPlayers.length > 0 &&

@@ -1,4 +1,5 @@
 import { supabase } from "../supabase/config";
+import { useEffect } from "react";
 
 const usePointsCrud = () => {
   const updatePoints = async (mainId, pointsChange) => {

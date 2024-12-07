@@ -12,6 +12,16 @@ import { useState } from "react";
 import { PointsManager } from "@/components/custom_components/PointsManager";
 import { EditFormDialog } from "@/components/custom_components/EditForm";
 import useFetchTeamPlayers from "@/custom-hooks/useFetchTeamPlayers";
+import { supabase } from "@/supabase/config"; // Import your Supabase client
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"; // Import ShadCN Dialog components
+import { Button } from "@/components/ui/button"; // Import button for dialog actions
 
 export const columns = [
   {
@@ -104,11 +114,11 @@ export const columns = [
       const [playerData, setPlayerData] = useState(null);
       const [teamName, setTeamName] = useState("");
       const { playersData } = useFetchTeamPlayers(teamName);
+      const [isAlertOpen, setIsAlertOpen] = useState(false); // Manage alert dialog state
 
       const teamPlayers = playersData.map((player) => player.player_name);
 
       const handleSetTeamPlayers = (updatedPlayers) => {
-        // Update playersData or send the changes to the server
         setPlayersData((prevData) =>
           prevData.map((player) =>
             player.team_name === teamName
@@ -129,6 +139,22 @@ export const columns = [
         }
       };
 
+      // Delete player function using Supabase (without react-query)
+      const handleDeletePlayer = async (playerId) => {
+        const { data, error } = await supabase
+          .from("main") // Assuming 'main' is your table
+          .delete()
+          .eq("id", playerId); // Deleting by player ID
+
+        if (error) {
+          console.error("Error deleting player:", error.message); // Handle error
+          return;
+        }
+
+        console.log("Player deleted successfully:", data); // Log the result
+        // Optionally, refresh your list or update state here
+      };
+
       return (
         <>
           <DropdownMenu>
@@ -146,7 +172,7 @@ export const columns = [
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => deleteConcern(player.id)}
+                onClick={() => setIsAlertOpen(true)} // Open the alert dialog for confirmation
               >
                 Delete
               </DropdownMenuItem>
@@ -163,7 +189,7 @@ export const columns = [
             <PointsManager
               isOpen={isDialogOpen}
               setIsOpen={setIsDialogOpen}
-              selectedId={player.id}
+              player={player}
             />
           )}
 
@@ -177,6 +203,39 @@ export const columns = [
               setTeamPlayers={handleSetTeamPlayers}
             />
           )}
+
+          {/* ShadCN Alert Dialog for Deletion Confirmation */}
+          <Dialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Confirm Deletion</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete this player? This action
+                  cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  onClick={() => setIsAlertOpen(false)} // Close the alert dialog
+                  variant="outline"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    handleDeletePlayer(player.id); // Perform the delete action
+                    setIsAlertOpen(false); // Close the alert dialog
+                  }}
+                  className="ml-2"
+                  variant="danger"
+                >
+                  Delete
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       );
     },

@@ -10,40 +10,35 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useFetchMain from "../../custom-hooks/useFetchMain";
 import usePointsCrud from "../../custom-hooks/usePointsCrud";
 
-export function PointsManager({ isOpen, setIsOpen, selectedId }) {
-  const { mainData } = useFetchMain(); // Fetch full_name and team_name
+export function PointsManager({ isOpen, setIsOpen, player }) {
   const { updatePoints } = usePointsCrud();
-  const [selectedEntry, setSelectedEntry] = useState(null);
   const [pointsInput, setPointsInput] = useState("");
 
+  // Initialize pointsInput when player data is available
   useEffect(() => {
-    if (selectedId) {
-      const entry = mainData.find((data) => data.id === parseInt(selectedId));
-      setSelectedEntry(entry);
-      // Safely handle the case where entry or entry.points is null or undefined
-      setPointsInput(
-        entry && entry.points != null ? entry.points.toString() : ""
-      );
+    if (player && player.points != null) {
+      setPointsInput(player.points.toString());
     }
-  }, [selectedId, mainData]);
+  }, [player]);
 
   const handlePointsChange = (e) => {
     const value = e.target.value;
 
-    // Allow empty input or enforce a positive integer
+    // Only allow empty input or positive integers
     if (value === "" || /^\d+$/.test(value)) {
       setPointsInput(value);
     }
   };
 
-  const handleSave = () => {
-    if (selectedEntry && pointsInput !== "") {
-      const newPoints = parseInt(pointsInput, 10); // Convert back to integer
-      updatePoints(selectedEntry.id, newPoints - selectedEntry.points);
-      setIsOpen(false); // Close dialog after saving
+  const handleSave = async () => {
+    if (player && pointsInput !== "") {
+      const newPoints = parseInt(pointsInput, 10);
+      // Update points directly for the selected player
+      await updatePoints(player.id, newPoints - player.points);
+
+      setIsOpen(false); // Close the dialog after saving
     }
   };
 
@@ -58,12 +53,11 @@ export function PointsManager({ isOpen, setIsOpen, selectedId }) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {selectedEntry && (
+          {player && (
             <>
               <p>
-                Current Points for{" "}
-                {selectedEntry.team_name || selectedEntry.full_name}:{" "}
-                {selectedEntry.points}
+                Current Points for {player.team_name || player.full_name}:{" "}
+                {player.points}
               </p>
 
               {/* Points Input */}
@@ -73,7 +67,7 @@ export function PointsManager({ isOpen, setIsOpen, selectedId }) {
                 </Label>
                 <Input
                   id="points_input"
-                  type="text" // Set type to "text" to handle empty input
+                  type="text"
                   value={pointsInput}
                   onChange={handlePointsChange}
                 />
