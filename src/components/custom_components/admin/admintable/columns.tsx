@@ -10,6 +10,8 @@ import {
 import { TableCell } from "@/components/custom_components/admin/TableCell";
 import { useState } from "react";
 import { PointsManager } from "@/components/custom_components/PointsManager";
+import { EditFormDialog } from "@/components/custom_components/EditForm";
+import useFetchTeamPlayers from "@/custom-hooks/useFetchTeamPlayers";
 
 export const columns = [
   {
@@ -97,8 +99,35 @@ export const columns = [
     header: "Actions",
     cell: ({ row }) => {
       const player = row.original;
-      const [isDialogOpen, setIsDialogOpen] = useState(false); // State for PointsManager
-      const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for Dropdown
+      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [isEditOpen, setIsEditOpen] = useState(false);
+      const [playerData, setPlayerData] = useState(null);
+      const [teamName, setTeamName] = useState("");
+      const { playersData } = useFetchTeamPlayers(teamName);
+
+      const teamPlayers = playersData.map((player) => player.player_name);
+
+      const handleSetTeamPlayers = (updatedPlayers) => {
+        // Update playersData or send the changes to the server
+        setPlayersData((prevData) =>
+          prevData.map((player) =>
+            player.team_name === teamName
+              ? { ...player, players: updatedPlayers }
+              : player
+          )
+        );
+      };
+
+      const handleOpenDialog = (teamOrPlayerData) => {
+        setIsEditOpen(true);
+        setPlayerData(teamOrPlayerData);
+
+        if (teamOrPlayerData.team_name) {
+          setTeamName(teamOrPlayerData.team_name);
+        } else {
+          setTeamName("");
+        }
+      };
 
       return (
         <>
@@ -111,31 +140,41 @@ export const columns = [
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => setIsDialogOpen(true)} // Open PointsManager dialog
+                onClick={() => setIsDialogOpen(true)}
               >
                 Manage Points
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => deleteConcern(concern.id)} // Delete action
+                onClick={() => deleteConcern(player.id)}
               >
                 Delete
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => setIsDropdownOpen(true)} // Show more details (or another action)
+                onClick={() => handleOpenDialog(player)}
               >
-                More Details
+                Edit
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Dialog integration */}
           {isDialogOpen && (
             <PointsManager
               isOpen={isDialogOpen}
               setIsOpen={setIsDialogOpen}
               selectedId={player.id}
+            />
+          )}
+
+          {isEditOpen && (
+            <EditFormDialog
+              isOpen={isEditOpen}
+              setIsOpen={setIsEditOpen}
+              isTeam={!!player.team_name}
+              playerData={playerData}
+              teamPlayers={teamPlayers}
+              setTeamPlayers={handleSetTeamPlayers}
             />
           )}
         </>
