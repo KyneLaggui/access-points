@@ -7,48 +7,48 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import useFetchMain from "../../custom-hooks/useFetchMain";
 import usePointsCrud from "../../custom-hooks/usePointsCrud";
 
-export function PointsManager() {
+export function PointsManager({ isOpen, setIsOpen, selectedId }) {
   const { mainData } = useFetchMain(); // Fetch full_name and team_name
   const { updatePoints } = usePointsCrud();
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const [pointsInput, setPointsInput] = useState(0);
+  const [pointsInput, setPointsInput] = useState("");
 
-  const handleSelectChange = (id) => {
-    const entry = mainData.find((data) => data.id === parseInt(id));
-    setSelectedEntry(entry);
-    setPointsInput(entry ? entry.points : 0);
-  };
+  useEffect(() => {
+    if (selectedId) {
+      const entry = mainData.find((data) => data.id === parseInt(selectedId));
+      setSelectedEntry(entry);
+      // Safely handle the case where entry or entry.points is null or undefined
+      setPointsInput(
+        entry && entry.points != null ? entry.points.toString() : ""
+      );
+    }
+  }, [selectedId, mainData]);
 
   const handlePointsChange = (e) => {
-    const value = Math.max(0, parseInt(e.target.value) || 0); // Prevent negative values
-    setPointsInput(value);
+    const value = e.target.value;
+
+    // Allow empty input or enforce a positive integer
+    if (value === "" || /^\d+$/.test(value)) {
+      setPointsInput(value);
+    }
   };
 
   const handleSave = () => {
-    if (selectedEntry) {
-      updatePoints(selectedEntry.id, pointsInput - selectedEntry.points);
+    if (selectedEntry && pointsInput !== "") {
+      const newPoints = parseInt(pointsInput, 10); // Convert back to integer
+      updatePoints(selectedEntry.id, newPoints - selectedEntry.points);
+      setIsOpen(false); // Close dialog after saving
     }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Manage Points</Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Manage Points for Player/Team</DialogTitle>
@@ -58,31 +58,8 @@ export function PointsManager() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {/* Select Team or Player */}
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="team_player" className="text-right">
-              Select Team or Player
-            </Label>
-            <Select
-              onValueChange={(value) => handleSelectChange(value)}
-              id="team_player"
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a Team or Player" />
-              </SelectTrigger>
-              <SelectContent>
-                {mainData.map((entry) => (
-                  <SelectItem key={entry.id} value={entry.id}>
-                    {entry.team_name || entry.full_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Display Current Points */}
           {selectedEntry && (
-            <div>
+            <>
               <p>
                 Current Points for{" "}
                 {selectedEntry.team_name || selectedEntry.full_name}:{" "}
@@ -96,20 +73,23 @@ export function PointsManager() {
                 </Label>
                 <Input
                   id="points_input"
-                  type="number"
+                  type="text" // Set type to "text" to handle empty input
                   value={pointsInput}
                   onChange={handlePointsChange}
-                  min="0"
                 />
               </div>
 
               {/* Save Button */}
               <DialogFooter>
-                <Button type="button" onClick={handleSave}>
+                <Button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={pointsInput === ""}
+                >
                   Save Points
                 </Button>
               </DialogFooter>
-            </div>
+            </>
           )}
         </div>
       </DialogContent>

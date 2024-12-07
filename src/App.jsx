@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { CrudForm } from "./components/custom_components/CrudForm";
-import { TeamCrudForm } from "./components/custom_components/TeamCrudForm";
 import useFetchMain from "./custom-hooks/useFetchMain";
 import useFetchTeamPlayers from "./custom-hooks/useFetchTeamPlayers";
 import { PointsManager } from "./components/custom_components/PointsManager";
 import { HistoryList } from "./components/custom_components/HistoryList";
 import AdminTable from "./components/custom_components/admin/admintable/AdminTable";
-PointsManager;
 
 function App() {
   const [allData, setAllData] = useState([]);
@@ -30,7 +28,6 @@ function App() {
   return (
     <div>
       <CrudForm />
-      <TeamCrudForm />
       <PointsManager />
       <HistoryList />
       <AdminTable />

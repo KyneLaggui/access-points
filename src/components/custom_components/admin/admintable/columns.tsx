@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TableCell } from "@/components/custom_components/admin/TableCell";
 import { useState } from "react";
+import { PointsManager } from "@/components/custom_components/PointsManager";
 
 export const columns = [
   {
@@ -82,61 +83,54 @@ export const columns = [
     ),
     cell: ({ row }) => <TableCell>{row.original.points}</TableCell>,
   },
-  // {
-  //   accessorKey: "actions",
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     const concern = row.original;
-  //     const [isOpen, setIsOpen] = useState(false);
-  //     const [isResolved, setIsResolved] = useState(concern.is_resolved);
-  //     const [isDialogOpen, setIsDialogOpen] = useState(false);
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const player = row.original;
+      const [isDialogOpen, setIsDialogOpen] = useState(false); // State for PointsManager
+      const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for Dropdown
 
-  //     const handleToggleStatus = async () => {
-  //       const newStatus = !isResolved;
-  //       const updatedStatus = await updateConcernStatus(concern.id, newStatus);
-  //       setIsResolved(updatedStatus);
-  //     };
+      return (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreHorizontalIcon className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>More Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => setIsDialogOpen(true)} // Open PointsManager dialog
+              >
+                Manage Points
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => deleteConcern(concern.id)} // Delete action
+              >
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => setIsDropdownOpen(true)} // Show more details (or another action)
+              >
+                More Details
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-  //     return (
-  //       <>
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger>
-  //             <MoreHorizontalIcon className="h-4 w-4" />
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent>
-  //             <DropdownMenuLabel>More Actions</DropdownMenuLabel>
-  //             <DropdownMenuSeparator />
-  //             <DropdownMenuItem
-  //               className="cursor-pointer"
-  //               onClick={() => setIsDialogOpen(true)} // Trigger the AlertDialog
-  //             >
-  //               {isResolved ? "Mark as Unresolved" : "Mark as Resolved"}
-  //             </DropdownMenuItem>
-  //             <DropdownMenuItem
-  //               className="cursor-pointer"
-  //               onClick={() => deleteConcern(concern.id)} // Trigger the AlertDialog
-  //             >
-  //               Delete
-  //             </DropdownMenuItem>
-  //             <DropdownMenuItem
-  //               className="cursor-pointer"
-  //               onClick={() => setIsOpen(true)}
-  //             >
-  //               More Details
-  //             </DropdownMenuItem>
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-
-  //         <ConfirmationDialog
-  //           isOpen={isDialogOpen}
-  //           onOpenChange={setIsDialogOpen}
-  //           isResolved={isResolved}
-  //           onConfirm={handleToggleStatus}
-  //         />
-
-  //         <Concerns isOpen={isOpen} setIsOpen={setIsOpen} concern={concern} />
-  //       </>
-  //     );
-  //   },
-  // },
+          {/* Dialog integration */}
+          {isDialogOpen && (
+            <PointsManager
+              isOpen={isDialogOpen}
+              setIsOpen={setIsDialogOpen}
+              selectedId={player.id}
+            />
+          )}
+        </>
+      );
+    },
+  },
 ];
