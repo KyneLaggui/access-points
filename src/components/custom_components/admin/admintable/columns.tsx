@@ -12,7 +12,7 @@ import { useState } from "react";
 import { PointsManager } from "@/components/custom_components/PointsManager";
 import { EditFormDialog } from "@/components/custom_components/EditForm";
 import useFetchTeamPlayers from "@/custom-hooks/useFetchTeamPlayers";
-import { supabase } from "@/supabase/config"; // Import your Supabase client
+import { supabase } from "@/supabase/config";
 import {
   Dialog,
   DialogContent,
@@ -20,8 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog"; // Import ShadCN Dialog components
-import { Button } from "@/components/ui/button"; // Import button for dialog actions
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 export const columns = [
   {
@@ -149,15 +150,15 @@ export const columns = [
         }
       };
 
-      // Delete player function using Supabase (without react-query)
       const handleDeletePlayer = async (playerId) => {
         const { data, error } = await supabase
-          .from("main") // Assuming 'main' is your table
+          .from("main")
           .delete()
-          .eq("id", playerId); // Deleting by player ID
+          .eq("id", playerId);
+        toast.success("Player/Team Deleted");
 
         if (error) {
-          console.error("Error deleting player:", error.message); // Handle error
+          toast.error("Error deleting player:", error.message);
           return;
         }
       };
@@ -236,7 +237,7 @@ export const columns = [
                     setIsAlertOpen(false); // Close the alert dialog
                   }}
                   className="ml-2"
-                  variant="danger"
+                  variant="destructive"
                 >
                   Delete
                 </Button>

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { supabase } from "../supabase/config";
 
 const useCreateMain = async (newMainData) => {
@@ -16,7 +17,7 @@ const useCreateMain = async (newMainData) => {
         .eq("id", newMainData.id);
 
       if (updateError) throw updateError;
-      alert("Successfully updated the player");
+      toast.success("Successfully updated the player");
     } else {
       // If no data exists, insert new record
       const { error: insertError } = await supabase
@@ -24,11 +25,10 @@ const useCreateMain = async (newMainData) => {
         .insert(newMainData);
 
       if (insertError) throw insertError;
-      alert("Successfully added the player");
+      toast.success("Successfully added the player");
     }
   } catch (error) {
-    console.log(error);
-    alert("An error occurred while saving the player");
+    toast.error("An error occurred while saving the player");
   }
 };
 

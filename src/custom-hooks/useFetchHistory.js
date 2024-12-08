@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase/config";
+import { toast } from "react-toastify";
 
 const useFetchHistory = () => {
   const [historyData, setHistoryData] = useState([]);
@@ -17,7 +18,7 @@ const useFetchHistory = () => {
           .order("created_at", { ascending: false });
 
         if (error) {
-          console.log("Error fetching history:", error);
+          toast.error("Error fetching history:", error);
           setLoading(false);
           return;
         }
@@ -53,7 +54,7 @@ const useFetchHistory = () => {
         setHistoryData(formattedHistory);
         setLoading(false);
       } catch (error) {
-        console.log("Error:", error);
+        toast.error("Error:", error);
         setLoading(false);
       }
     };

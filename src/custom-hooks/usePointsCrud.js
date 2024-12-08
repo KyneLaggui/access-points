@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { supabase } from "../supabase/config";
 import { useEffect } from "react";
 
@@ -32,7 +33,7 @@ const usePointsCrud = () => {
 
       if (historyError) throw historyError;
 
-      alert("Points updated successfully!");
+      toast.success("Points updated successfully!");
     } catch (error) {
       console.error("Error updating points:", error);
     }

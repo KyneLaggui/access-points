@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
-import useCreateMain from "../../custom-hooks/useCreateMain";
+import createMain from "../../custom-hooks/useCreateMain";
 import useCreateTeam from "../../custom-hooks/useCreateTeam";
 import { Plus, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -102,13 +102,12 @@ export function CrudForm() {
     }
 
     try {
-      // Call your custom hook here and wait for it to finish
-      await useCreateMain(formState);
+      // Call the updated function directly
+      await createMain(formState);
       resetFields();
       setIsDialogOpen(false);
     } catch (error) {
       console.error("Error submitting player:", error);
-      // Optionally handle error state here
     }
   };
 
@@ -226,7 +225,7 @@ export function CrudForm() {
               {/* Section Team Select */}
             </div>
             <div className="flex justify-end">
-              <Button onClick={handleTeamSubmit}>Register Team</Button>
+              <Button onClick={handlePlayerSubmit}>Register Player</Button>
             </div>
           </TabsContent>
 

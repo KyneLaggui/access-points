@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { supabase } from "../supabase/config";
 
 const useCreateTeam = async (teamData, teamPlayers) => {
@@ -37,7 +38,7 @@ const useCreateTeam = async (teamData, teamPlayers) => {
 
       if (playerInsertError) throw playerInsertError;
 
-      alert("Team and players successfully updated!");
+      toast.success("Team and players successfully updated!");
     } else {
       // If team does not exist, create new team
       const { data: mainData, error: mainError } = await supabase
@@ -62,11 +63,11 @@ const useCreateTeam = async (teamData, teamPlayers) => {
 
       if (playerError) throw playerError;
 
-      alert("Team and players successfully registered!");
+      toast.success("Team and players successfully registered!");
     }
   } catch (error) {
     console.error("Error handling team:", error);
-    alert("An error occurred while processing the team.");
+    toast.error("An error occurred while processing the team.");
   }
 };
 
