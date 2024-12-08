@@ -18,7 +18,7 @@ export default function AdminTable() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-6 flex flex-col gap-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-4xl font-bold">Admin Dashboard</h1>
         <Button variant="destructive" onClick={handleLogout}>
