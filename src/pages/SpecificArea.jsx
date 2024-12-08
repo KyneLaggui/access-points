@@ -7,20 +7,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import useFetchTeamPlayers from "@/custom-hooks/useFetchTeamPlayers";
+import useFetchSpecificArea from "@/custom-hooks/useFetchSpecificArea";
 
 const SpecificArea = ({ team }) => {
   const contributors = team.contributors || [];
   const [isTeam, setIsTeam] = useState(false);
 
-  // Use the first `team_name` in contributors, or pass null if not found
-  const teamName = contributors.find(
-    (contributor) => contributor.team_name
-  )?.team_name;
-  const { playersData: teamPlayers } = useFetchTeamPlayers(teamName);
+  const teamNames = contributors
+    .filter((contributor) => contributor.team_name)
+    .map((contributor) => contributor.team_name); // Get all team names
+
+  const { playersData: teamPlayers } = useFetchSpecificArea(teamNames);
 
   useEffect(() => {
-    // Determine if the contributors array represents a team
     const checkIfTeam = contributors.some(
       (contributor) => contributor.team_name
     );
@@ -86,23 +85,52 @@ const SpecificArea = ({ team }) => {
         <ul className="list-disc ml-4">
           {contributors.length > 0 ? (
             contributors.map((contributor, index) => (
-              <li key={index}>
-                {contributor.full_name || contributor.team_name || "none"} -{" "}
-                {contributor.points} points
-              </li>
+              <div key={index}>
+                {contributor.team_name ? (
+                  // If it's a team, display the team name with points and then its players
+                  <div>
+                    <h3 className="font-bold mt-4">
+                      {contributor.team_name} - {contributor.points || "0"}{" "}
+                      points
+                    </h3>
+                    <ul className="ml-6">
+                      {teamPlayers
+                        .filter(
+                          (player) => player.team_name === contributor.team_name
+                        ) // Filter players by team
+                        .map((player, playerIndex) => (
+                          <li key={playerIndex}>
+                            {player.player_name || "none"}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ) : (
+                  // If it's a non-team contributor, just display their full name and points
+                  <li key={index}>
+                    {contributor.full_name || "none"} -{" "}
+                    {contributor.points || "0"} points
+                  </li>
+                )}
+              </div>
             ))
           ) : (
             <p>No contributors found.</p>
           )}
-          {isTeam && teamPlayers.length > 0 && (
-            <>
-              <h1></h1>
-              <h3 className="mt-4">Team Members:</h3>
-              {teamPlayers.map((player, index) => (
-                <li key={index}>{player.player_name || "none"}</li>
-              ))}
-            </>
-          )}
+
+          {isTeam &&
+            teamPlayers.length > 0 &&
+            !contributors.some((contributor) => contributor.team_name) && (
+              <>
+                <h3 className="mt-4">Team Members:</h3>
+                {teamPlayers.map((player, index) => (
+                  <li key={index}>
+                    {player.player_name || "none"} - {player.points || "0"}{" "}
+                    points
+                  </li>
+                ))}
+              </>
+            )}
         </ul>
       </DialogContent>
     </Dialog>
