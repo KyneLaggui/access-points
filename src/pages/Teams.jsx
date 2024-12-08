@@ -79,7 +79,7 @@ const Teams = () => {
         {Object.keys(gameNames).map((game) => (
           <button
             key={game}
-            className={`px-4 py-2 text-white relative group text-nowrap font-protipoIcons ${
+            className={`px-4 py-2 relative group text-nowrap font-protipoIcons ${
               selectedGame === game ? "text-[#ee0000]" : ""
             }`}
             onClick={() => setSelectedGame(game)}

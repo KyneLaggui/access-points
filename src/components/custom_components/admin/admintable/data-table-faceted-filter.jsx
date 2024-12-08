@@ -48,19 +48,7 @@ function DataTableFacetedFilter({ column, title, options }) {
                     .map((option) => (
                       <p
                         key={option.value}
-                        className={`text-sm font-normal px-2 py-1 rounded-md text-white ${
-                          option.label === "Concern" ||
-                          option.label === "Anonymous"
-                            ? "bg-status-rejectedOutline"
-                            : option.label === "Proposal" ||
-                              option.label === "Identified"
-                            ? "bg-status-proposalOutline"
-                            : option.label === "Resolved"
-                            ? "bg-status-acceptedOutline"
-                            : option.label === "Unresolved"
-                            ? "bg-status-pendingOutline"
-                            : "bg-yellow-700"
-                        }`}
+                        className="text-sm bg-[#ee0000] font-normal px-2 py-1 rounded-md text-white"
                       >
                         {option.label}
                       </p>
