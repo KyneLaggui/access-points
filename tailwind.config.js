@@ -8,6 +8,7 @@ module.exports = {
         formula1: ["Formula1-Regular", "sans-serif"],
         formula1Bold: ["Formula1-Bold", "sans-serif"],
         formula1Wide: ["Formula1-Wide", "sans-serif"],
+        protipoIcons: ["Protipo-Icons", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

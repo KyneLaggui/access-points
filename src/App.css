@@ -18,3 +18,10 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Protipo-Icons";
+  src: url("./assets/fonts/TypeTogether-Protipo-Icons.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
