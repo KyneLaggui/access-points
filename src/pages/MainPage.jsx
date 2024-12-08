@@ -20,17 +20,17 @@ const MainPage = () => {
           </p>
         </div>
         <Teams />
-        <div className="flex justify-between items-center">
+        <div className="flex justify-around items-center">
           <img
             src={AccessLogo}
             alt="Access Logo"
-            className="max-w-[60px] object-cover"
+            className="max-w-[40px] sm:max-w-[60px] object-cover"
           />
           <LoginForm />
           <img
             src={FormulaLogo}
             alt="Formula 1 Logo"
-            className="max-w-[100px] object-contain"
+            className="max-w-[80px]  sm:max-w-[100px] object-contain"
           />
         </div>
       </div>

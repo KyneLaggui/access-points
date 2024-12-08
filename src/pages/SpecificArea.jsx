@@ -68,7 +68,7 @@ const SpecificArea = ({ team }) => {
           <img
             src={imageUrl}
             alt={team.name}
-            className={`absolute top-[-200px] object-cover opacity-5 ${
+            className={`absolute top-[-200px] object-cover opacity-10 ${
               team.name === "Haas" ? "filter invert" : ""
             }`}
           />
@@ -82,29 +82,39 @@ const SpecificArea = ({ team }) => {
               {team.rank}
             </h1>
           </div>
-          <div className="flex isolate justify-between w-full px-6 py-4 ">
+          <div className="flex isolate flex-col sm:flex-row gap-2 justify-between w-full px-6 py-4 ">
             <div className="flex flex-col gap-2">
               <h1
-                className={`font-formula1Bold uppercase text-3xl ${
+                className={`font-formula1Bold uppercase text-2xl sm:text-3xl ${
                   team.name === "Haas" ? "text-black" : "text-white"
                 }`}
               >
                 {team.name || "none"}
               </h1>
               <span
-                className={`font-protipoIcons font-normal ${
+                className={`font-protipoIcons font-normal text-md sm:text-lg ${
                   team.name === "Haas" ? "text-black" : "text-white"
                 }`}
               >
-                {isTeam
-                  ? `Team Name: ${team.highestContributor?.name || "None"}`
-                  : `Top Contributor: ${
-                      team.highestContributor?.name || "None"
-                    }`}
+                {isTeam ? (
+                  <div>
+                    Team Top Contributor:{" "}
+                    <span className="font-bold">
+                      {team.highestContributor?.name || "None"}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="font-bold">
+                    Top Contributor:{" "}
+                    <span className="font-bold">
+                      {team.highestContributor?.name || "None"}
+                    </span>
+                  </div>
+                )}
               </span>
             </div>
             <span
-              className={`font-formula1Bold text-3xl ${
+              className={`font-formula1Bold text-2xl sm:text-3xl ${
                 team.name === "Haas" ? "text-black" : "text-white"
               }`}
             >
@@ -116,7 +126,7 @@ const SpecificArea = ({ team }) => {
 
       <DialogContent className="min-h-[200px]">
         <DialogHeader>
-          <DialogTitle className="font-formula1Bold uppercase">
+          <DialogTitle className="font-formula1Bold uppercase text-2xl">
             {isTeam ? `${team.name}` : `${team.name}`}
           </DialogTitle>
           <DialogDescription>
@@ -129,7 +139,7 @@ const SpecificArea = ({ team }) => {
           {isTeam ? (
             ""
           ) : (
-            <div className="flex justify-between mb-3 font-bold">
+            <div className="flex justify-between mb-3 font-bold text-lg text-[#ee0000] font-protinoIcon">
               <h1>Name</h1>
               <h1>Points</h1>
             </div>
@@ -142,10 +152,12 @@ const SpecificArea = ({ team }) => {
                   {contributor.team_name ? (
                     <div>
                       <div className="font-bold flex justify-between">
-                        <h1>{contributor.team_name}</h1>
-                        <h1>{contributor.points || "0"} points </h1>
+                        <h1 className="text-xl">{contributor.team_name}</h1>
+                        <h1 className="font-formula1Bold ">
+                          {contributor.points || "0"}{" "}
+                        </h1>
                       </div>
-                      <ul className="ml-6 list-disc">
+                      <ul className="ml-6 list-disc text-gray-400 mb-4">
                         {teamPlayers
                           .filter(
                             (player) =>
@@ -159,9 +171,11 @@ const SpecificArea = ({ team }) => {
                       </ul>
                     </div>
                   ) : (
-                    <div key={index} className="flex justify-between ">
+                    <div key={index} className="flex justify-between px-2">
                       <div>{contributor.full_name || "none"}</div>
-                      <div>{contributor.points || "0"} points</div>
+                      <div className="font-formula1Bold ">
+                        {contributor.points || "0"}
+                      </div>
                     </div>
                   )}
                 </div>

@@ -27,7 +27,6 @@ const Teams = () => {
   const [selectedGame, setSelectedGame] = useState("all");
 
   useEffect(() => {
-    // Filter data based on the selected game
     const filteredData =
       selectedGame === "all"
         ? mainData
@@ -81,13 +80,13 @@ const Teams = () => {
           <button
             key={game}
             className={`px-4 py-2 text-white relative group text-nowrap font-protipoIcons ${
-              selectedGame === game ? "text-yellow-400" : ""
+              selectedGame === game ? "text-[#ee0000]" : ""
             }`}
             onClick={() => setSelectedGame(game)}
           >
             {gameNames[game]}
             <span
-              className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-[#ee0000] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${
                 selectedGame === game ? "scale-x-100" : ""
               }`}
             />
