@@ -43,7 +43,7 @@ export const columns = [
         return <TableCell>-</TableCell>;
       }
       return (
-        <TableCell>
+        <TableCell className="min-w-[150px]">
           {[full_name, team_name].filter(Boolean).join(" || ")}
         </TableCell>
       );
@@ -74,7 +74,9 @@ export const columns = [
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-      return <TableCell>{formattedSectionTeam}</TableCell>;
+      return (
+        <TableCell className="text-nowrap">{formattedSectionTeam}</TableCell>
+      );
     },
   },
   {
@@ -92,7 +94,7 @@ export const columns = [
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-      return <TableCell>{formattedGame}</TableCell>;
+      return <TableCell className="text-nowrap">{formattedGame}</TableCell>;
     },
   },
   {
