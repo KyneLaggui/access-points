@@ -68,7 +68,7 @@ const SpecificArea = ({ team }) => {
           <img
             src={imageUrl}
             alt={team.name}
-            className={`absolute top-[-200px] object-cover opacity-10 ${
+            className={`absolute top-[-150px] object-cover opacity-10 ${
               team.name === "Haas" ? "filter invert" : ""
             }`}
           />
