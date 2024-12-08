@@ -124,7 +124,7 @@ const SpecificArea = ({ team }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="min-h-[200px]">
+      <DialogContent className="min-h-[200px]  ">
         <DialogHeader>
           <DialogTitle className="font-formula1Bold uppercase text-2xl">
             {isTeam ? `${team.name}` : `${team.name}`}
