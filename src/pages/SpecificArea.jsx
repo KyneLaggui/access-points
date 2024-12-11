@@ -23,7 +23,7 @@ const SpecificArea = ({ team }) => {
 
   const teamNames = contributors
     .filter((contributor) => contributor.team_name)
-    .map((contributor) => contributor.team_name); // Get all team names
+    .map((contributor) => contributor.team_name);
 
   const { playersData: teamPlayers } = useFetchSpecificArea(teamNames);
 
@@ -59,6 +59,14 @@ const SpecificArea = ({ team }) => {
       imageUrl = Mercedes;
       break;
   }
+
+  // Split contributors into individuals and teams
+  const individualContributors = contributors.filter(
+    (contributor) => !contributor.team_name
+  );
+  const teamContributors = contributors.filter(
+    (contributor) => contributor.team_name
+  );
 
   return (
     <Dialog>
@@ -128,7 +136,7 @@ const SpecificArea = ({ team }) => {
       <DialogContent className="min-h-[200px]">
         <DialogHeader>
           <DialogTitle className="font-formula1Bold uppercase text-2xl">
-            {isTeam ? `${team.name}` : `${team.name}`}
+            {team.name}
           </DialogTitle>
           <DialogDescription>
             {isTeam
@@ -138,66 +146,56 @@ const SpecificArea = ({ team }) => {
         </DialogHeader>
         <ScrollArea>
           <div className="px-4 py-2 max-h-[300px] ">
-            {isTeam ? (
-              ""
-            ) : (
-              <div className="flex justify-between mb-3 font-bold text-lg text-[#ee0000] font-protinoIcon">
-                <h1>Name</h1>
-                <h1>Points</h1>
-              </div>
-            )}
-            <div className="flex flex-col gap-2">
-              {contributors.length > 0 ? (
-                contributors.map((contributor, index) => (
-                  <div key={index}>
-                    {contributor.team_name ? (
-                      <div>
-                        <div className="font-bold flex justify-between">
-                          <h1 className="text-xl">{contributor.team_name}</h1>
-                          <h1 className="font-formula1Bold ">
-                            {contributor.points || "0"}{" "}
-                          </h1>
-                        </div>
-                        <ul className="ml-6 list-disc text-gray-400 mb-4">
-                          {teamPlayers
-                            .filter(
-                              (player) =>
-                                player.team_name === contributor.team_name
-                            )
-                            .map((player, playerIndex) => (
-                              <li key={playerIndex}>
-                                {player.player_name || "none"}
-                              </li>
-                            ))}
-                        </ul>
-                      </div>
-                    ) : (
-                      <div key={index} className="flex justify-between px-2">
-                        <div>{contributor.full_name || "none"}</div>
-                        <div className="font-formula1Bold ">
-                          {contributor.points || "0"}
-                        </div>
-                      </div>
-                    )}
+            {/* Individuals Section */}
+            {individualContributors.length > 0 && (
+              <>
+                <h2 className="font-bold text-xl mb-3 border-b pb-2">
+                  Individuals
+                </h2>
+                <div className="flex justify-between mb-3 font-bold text-lg">
+                  <h1>Name</h1>
+                  <h1>Points</h1>
+                </div>
+                {individualContributors.map((contributor, index) => (
+                  <div key={index} className="flex justify-between px-2">
+                    <div>{contributor.full_name || "none"}</div>
+                    <div className="font-formula1Bold">
+                      {contributor.points || "0"}
+                    </div>
                   </div>
-                ))
-              ) : (
-                <p>No contributors found.</p>
-              )}
-            </div>
-            {isTeam &&
-              teamPlayers.length > 0 &&
-              !contributors.some((contributor) => contributor.team_name) && (
-                <>
-                  <h3 className="mt-4">Team Members:</h3>
-                  {teamPlayers.map((player, index) => (
-                    <li key={index}>
-                      {player.player_name || "none"} - {player.points || "0"}{" "}
-                      points
-                    </li>
-                  ))}
-                </>
-              )}
+                ))}
+              </>
+            )}
+
+            {/* Teams Section */}
+            {teamContributors.length > 0 && (
+              <>
+                <h2 className="font-bold text-xl mt-4 mb-3 border-b pb-2">
+                  Teams
+                </h2>
+                {teamContributors.map((contributor, index) => (
+                  <div key={index}>
+                    <div className="font-bold flex justify-between">
+                      <h1 className="text-xl">{contributor.team_name}</h1>
+                      <h1 className="font-formula1Bold">
+                        {contributor.points || "0"}
+                      </h1>
+                    </div>
+                    <ul className="ml-6 list-disc text-gray-400 mb-4">
+                      {teamPlayers
+                        .filter(
+                          (player) => player.team_name === contributor.team_name
+                        )
+                        .map((player, playerIndex) => (
+                          <li key={playerIndex}>
+                            {player.player_name || "none"}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </ScrollArea>
       </DialogContent>
