@@ -17,7 +17,7 @@ import Alpine from "@/assets/images/alpine.png";
 import Redbull from "@/assets/images/redbull.png";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const SpecificArea = ({ team }) => {
+const SpecificArea = ({ team, selectedGame }) => {
   const contributors = team.contributors || [];
   const [isTeam, setIsTeam] = useState(false);
 
@@ -58,6 +58,27 @@ const SpecificArea = ({ team }) => {
     case "Mercedes":
       imageUrl = Mercedes;
       break;
+  }
+
+  // Determine placement for "all" game
+  let placement;
+  if (selectedGame === "all") {
+    switch (team.rank) {
+      case 1:
+        placement = "Champion";
+        break;
+      case 2:
+        placement = "1st Runner Up";
+        break;
+      case 3:
+        placement = "2nd Runner Up";
+        break;
+      case 4:
+        placement = "3rd Runner Up";
+        break;
+      default:
+        placement = "";
+    }
   }
 
   // Split contributors into individuals and teams
@@ -105,7 +126,11 @@ const SpecificArea = ({ team }) => {
                   team.name === "Haas" ? "text-black" : "text-white"
                 }`}
               >
-                {isTeam ? (
+                {selectedGame === "all" ? (
+                  <div>
+                    <span className="font-bold">{placement}</span>
+                  </div>
+                ) : isTeam ? (
                   <div>
                     Team Top Contributor:{" "}
                     <span className="font-bold">

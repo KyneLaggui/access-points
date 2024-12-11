@@ -97,7 +97,11 @@ const Teams = () => {
       {/* Team Cards */}
       <div className="grid gap-4">
         {teamPoints.map((team) => (
-          <SpecificArea key={team.value} team={team} />
+          <SpecificArea
+            key={team.value}
+            team={team}
+            selectedGame={selectedGame}
+          />
         ))}
       </div>
     </div>
