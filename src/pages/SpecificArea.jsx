@@ -63,21 +63,25 @@ const SpecificArea = ({ team, selectedGame }) => {
   // Determine placement for "all" game
   let placement;
   if (selectedGame === "all") {
-    switch (team.rank) {
-      case 1:
-        placement = "Champion";
-        break;
-      case 2:
-        placement = "1st Runner Up";
-        break;
-      case 3:
-        placement = "2nd Runner Up";
-        break;
-      case 4:
-        placement = "3rd Runner Up";
-        break;
-      default:
-        placement = "";
+    if (team.points === 0) {
+      placement = "No Ranking Yet";
+    } else {
+      switch (team.rank) {
+        case 1:
+          placement = "Champion";
+          break;
+        case 2:
+          placement = "1st Runner Up";
+          break;
+        case 3:
+          placement = "2nd Runner Up";
+          break;
+        case 4:
+          placement = "3rd Runner Up";
+          break;
+        default:
+          placement = "";
+      }
     }
   }
 
