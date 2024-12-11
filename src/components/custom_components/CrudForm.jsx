@@ -274,33 +274,39 @@ export function CrudForm() {
                 <SelectTrigger>
                   <SelectValue placeholder="Select Game" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="flip_cup">Flip Cup</SelectItem>
-                  <SelectItem value="chinese_garter">Chinese Garter</SelectItem>
-                  <SelectItem value="mens_basketball">
-                    Men's Basketball
-                  </SelectItem>
-                  <SelectItem value="mens_volleyball">
-                    Men's Volleyball
-                  </SelectItem>
-                  <SelectItem value="badminton_singles">
-                    Badminton Singles
-                  </SelectItem>
-                  <SelectItem value="badminton_doubles">
-                    Badminton Doubles
-                  </SelectItem>
-                  <SelectItem value="valorant">Valorant</SelectItem>
-                  <SelectItem value="mobile_legends">Mobile Legends</SelectItem>
-                  <SelectItem value="league_of_legends">
-                    League of Legends
-                  </SelectItem>
-                  <SelectItem value="general_information_qb">
-                    General Information QB
-                  </SelectItem>
-                  <SelectItem value="general_engineering_qb">
-                    General Engineering QB
-                  </SelectItem>
-                </SelectContent>
+                <ScrollArea>
+                  <SelectContent className="max-h-[200px]">
+                    <SelectItem value="flip_cup">Flip Cup</SelectItem>
+                    <SelectItem value="chinese_garter">
+                      Chinese Garter
+                    </SelectItem>
+                    <SelectItem value="mens_basketball">
+                      Men's Basketball
+                    </SelectItem>
+                    <SelectItem value="mens_volleyball">
+                      Men's Volleyball
+                    </SelectItem>
+                    <SelectItem value="badminton_singles">
+                      Badminton Singles
+                    </SelectItem>
+                    <SelectItem value="badminton_doubles">
+                      Badminton Doubles
+                    </SelectItem>
+                    <SelectItem value="valorant">Valorant</SelectItem>
+                    <SelectItem value="mobile_legends">
+                      Mobile Legends
+                    </SelectItem>
+                    <SelectItem value="league_of_legends">
+                      League of Legends
+                    </SelectItem>
+                    <SelectItem value="general_information_qb">
+                      General Information QB
+                    </SelectItem>
+                    <SelectItem value="general_engineering_qb">
+                      General Engineering QB
+                    </SelectItem>
+                  </SelectContent>
+                </ScrollArea>
               </Select>
               {errors.game && (
                 <p className="text-red-500 text-sm">{errors.game}</p>
