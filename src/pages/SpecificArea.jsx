@@ -147,6 +147,14 @@ const SpecificArea = ({ team }) => {
         <ScrollArea>
           <div className="px-4 py-2 max-h-[300px] ">
             {/* Individuals Section */}
+
+            {individualContributors.length === 0 &&
+              teamContributors.length === 0 && (
+                <p className="text-center text-gray-500">
+                  There are no contributions from this team yet.
+                </p>
+              )}
+
             {individualContributors.length > 0 && (
               <>
                 <h2 className="font-bold text-xl mb-3 border-b pb-2">
