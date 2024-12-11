@@ -207,6 +207,11 @@ export function CrudForm() {
                   <SelectValue placeholder="Select Game" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="dress_to_impress">
+                    Dress to Impress
+                  </SelectItem>
+                  <SelectItem value="chinese_garter">Chinese Garter</SelectItem>
+                  <SelectItem value="block_blast">Block Blast</SelectItem>
                   <SelectItem value="chess">Chess</SelectItem>
                   <SelectItem value="rubiks_cube">Rubik's Cube</SelectItem>
                   <SelectItem value="scrabble">Scrabble</SelectItem>
@@ -270,6 +275,8 @@ export function CrudForm() {
                   <SelectValue placeholder="Select Game" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="flip_cup">Flip Cup</SelectItem>
+                  <SelectItem value="chinese_garter">Chinese Garter</SelectItem>
                   <SelectItem value="mens_basketball">
                     Men's Basketball
                   </SelectItem>
