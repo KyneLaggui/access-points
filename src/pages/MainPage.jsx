@@ -15,9 +15,7 @@ const MainPage = () => {
           <h1 className="font-formula1Bold text-4xl sm:text-5xl">
             THE CPE GRAND PRIX
           </h1>
-          <p className="font-formula1 text-md sm:text-lg">
-            MINI GAMES LEADERBOADS
-          </p>
+          <p className="font-formula1 text-md sm:text-lg">LEADERBOADS</p>
         </div>
         <Teams />
         <div className="flex justify-around items-center">

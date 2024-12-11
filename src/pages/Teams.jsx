@@ -15,7 +15,7 @@ const Teams = () => {
   ];
 
   const gameNames = {
-    all: "All Games",
+    all: "Overall",
     dress_to_impress: "Dress to Impress",
     block_blast: "Block Blast",
     flip_cup: "Flip Cup",

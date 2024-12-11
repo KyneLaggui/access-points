@@ -15,6 +15,7 @@ import Haas from "@/assets/images/haas.png";
 import Mclaren from "@/assets/images/mclaren.png";
 import Alpine from "@/assets/images/alpine.png";
 import Redbull from "@/assets/images/redbull.png";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const SpecificArea = ({ team }) => {
   const contributors = team.contributors || [];
@@ -124,7 +125,7 @@ const SpecificArea = ({ team }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="min-h-[200px]  ">
+      <DialogContent className="min-h-[200px]">
         <DialogHeader>
           <DialogTitle className="font-formula1Bold uppercase text-2xl">
             {isTeam ? `${team.name}` : `${team.name}`}
@@ -135,70 +136,70 @@ const SpecificArea = ({ team }) => {
               : "Details about the contributors and their points."}
           </DialogDescription>
         </DialogHeader>
-        <div className="px-4 py-2 ">
-          {isTeam ? (
-            ""
-          ) : (
-            <div className="flex justify-between mb-3 font-bold text-lg text-[#ee0000] font-protinoIcon">
-              <h1>Name</h1>
-              <h1>Points</h1>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-2">
-            {contributors.length > 0 ? (
-              contributors.map((contributor, index) => (
-                <div key={index}>
-                  {contributor.team_name ? (
-                    <div>
-                      <div className="font-bold flex justify-between">
-                        <h1 className="text-xl">{contributor.team_name}</h1>
-                        <h1 className="font-formula1Bold ">
-                          {contributor.points || "0"}{" "}
-                        </h1>
-                      </div>
-                      <ul className="ml-6 list-disc text-gray-400 mb-4">
-                        {teamPlayers
-                          .filter(
-                            (player) =>
-                              player.team_name === contributor.team_name
-                          )
-                          .map((player, playerIndex) => (
-                            <li key={playerIndex}>
-                              {player.player_name || "none"}
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
-                  ) : (
-                    <div key={index} className="flex justify-between px-2">
-                      <div>{contributor.full_name || "none"}</div>
-                      <div className="font-formula1Bold ">
-                        {contributor.points || "0"}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))
+        <ScrollArea>
+          <div className="px-4 py-2 max-h-[300px] ">
+            {isTeam ? (
+              ""
             ) : (
-              <p>No contributors found.</p>
+              <div className="flex justify-between mb-3 font-bold text-lg text-[#ee0000] font-protinoIcon">
+                <h1>Name</h1>
+                <h1>Points</h1>
+              </div>
             )}
+            <div className="flex flex-col gap-2">
+              {contributors.length > 0 ? (
+                contributors.map((contributor, index) => (
+                  <div key={index}>
+                    {contributor.team_name ? (
+                      <div>
+                        <div className="font-bold flex justify-between">
+                          <h1 className="text-xl">{contributor.team_name}</h1>
+                          <h1 className="font-formula1Bold ">
+                            {contributor.points || "0"}{" "}
+                          </h1>
+                        </div>
+                        <ul className="ml-6 list-disc text-gray-400 mb-4">
+                          {teamPlayers
+                            .filter(
+                              (player) =>
+                                player.team_name === contributor.team_name
+                            )
+                            .map((player, playerIndex) => (
+                              <li key={playerIndex}>
+                                {player.player_name || "none"}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <div key={index} className="flex justify-between px-2">
+                        <div>{contributor.full_name || "none"}</div>
+                        <div className="font-formula1Bold ">
+                          {contributor.points || "0"}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No contributors found.</p>
+              )}
+            </div>
+            {isTeam &&
+              teamPlayers.length > 0 &&
+              !contributors.some((contributor) => contributor.team_name) && (
+                <>
+                  <h3 className="mt-4">Team Members:</h3>
+                  {teamPlayers.map((player, index) => (
+                    <li key={index}>
+                      {player.player_name || "none"} - {player.points || "0"}{" "}
+                      points
+                    </li>
+                  ))}
+                </>
+              )}
           </div>
-
-          {isTeam &&
-            teamPlayers.length > 0 &&
-            !contributors.some((contributor) => contributor.team_name) && (
-              <>
-                <h3 className="mt-4">Team Members:</h3>
-                {teamPlayers.map((player, index) => (
-                  <li key={index}>
-                    {player.player_name || "none"} - {player.points || "0"}{" "}
-                    points
-                  </li>
-                ))}
-              </>
-            )}
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
