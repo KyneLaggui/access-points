@@ -22,6 +22,13 @@ const Teams = () => {
     chinese_garter: "Chinese Garter",
   };
 
+  const excludedGames = [
+    "dress_to_impress",
+    "block_blast",
+    "flip_cup",
+    "chinese_garter",
+  ];
+
   const { mainData } = useFetchMain();
   const [teamPoints, setTeamPoints] = useState([]);
   const [selectedGame, setSelectedGame] = useState("all");
@@ -29,7 +36,7 @@ const Teams = () => {
   useEffect(() => {
     const filteredData =
       selectedGame === "all"
-        ? mainData
+        ? mainData.filter((entry) => !excludedGames.includes(entry.game))
         : mainData.filter((entry) => entry.game === selectedGame);
 
     // Initialize team points
