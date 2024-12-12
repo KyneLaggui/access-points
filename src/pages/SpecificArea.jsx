@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import useFetchSpecificArea from "@/custom-hooks/useFetchSpecificArea";
+// import useFetchSpecificArea from "@/custom-hooks/useFetchSpecificArea";
 import Ferrari from "@/assets/images/ferrari.png";
 import AstonMartin from "@/assets/images/aston_martin.png";
 import Mercedes from "@/assets/images/mercedes.png";
@@ -25,7 +25,7 @@ const SpecificArea = ({ team, selectedGame }) => {
     .filter((contributor) => contributor.team_name)
     .map((contributor) => contributor.team_name);
 
-  const { playersData: teamPlayers } = useFetchSpecificArea(teamNames);
+  // const { playersData: teamPlayers } = useFetchSpecificArea(teamNames);
 
   useEffect(() => {
     const checkIfTeam = contributors.some(
