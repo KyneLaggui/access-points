@@ -195,7 +195,18 @@ const SpecificArea = ({ team, selectedGame }) => {
                 </div>
                 {individualContributors.map((contributor, index) => (
                   <div key={index} className="flex justify-between px-2">
-                    <div>{contributor.full_name || "none"}</div>
+                    <div className="flex flex-col">
+                      <div>{contributor.full_name || "none"}</div>
+                      <div className="text-[#ee0000] text-sm ml-2">
+                        {contributor.game
+                          ?.split("_")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}{" "}
+                      </div>
+                    </div>
                     <div className="font-formula1Bold">
                       {contributor.points || "0"}
                     </div>
@@ -212,11 +223,24 @@ const SpecificArea = ({ team, selectedGame }) => {
                 </h2>
                 {teamContributors.map((contributor, index) => (
                   <div key={index}>
-                    <div className="font-bold flex justify-between">
-                      <h1 className="text-xl">{contributor.team_name}</h1>
-                      <h1 className="font-formula1Bold">
+                    <div className="flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <div className="text-xl font-semibold">
+                          {contributor.team_name || "none"}
+                        </div>
+                        <div className="text-[#ee0000] text-sm ml-2">
+                          {contributor.game
+                            ?.split("_")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")}{" "}
+                        </div>
+                      </div>
+                      <div className="font-formula1Bold">
                         {contributor.points || "0"}
-                      </h1>
+                      </div>
                     </div>
                     <ul className="ml-6 list-disc text-gray-400 mb-4">
                       {teamPlayers
