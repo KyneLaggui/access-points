@@ -212,6 +212,7 @@ export function CrudForm() {
                   </SelectItem>
                   <SelectItem value="chinese_garter">Chinese Garter</SelectItem>
                   <SelectItem value="block_blast">Block Blast</SelectItem>
+                  <SelectItem value="flip_cup">Flip Cup</SelectItem>
                   <SelectItem value="chess">Chess</SelectItem>
                   <SelectItem value="rubiks_cube">Rubik's Cube</SelectItem>
                   <SelectItem value="scrabble">Scrabble</SelectItem>
